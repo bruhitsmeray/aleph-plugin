@@ -1,6 +1,6 @@
 # aleph-plugin
 
-**NOTE:** This plugin is based on the work made for [Aleph](https://github.com/dev-raykeex/Aleph) which will keep being developed as a standalone movement game.
+**NOTE:** This plugin is based on the work made for [Aleph](https://github.com/dev-raykeex/Aleph) which will keep being developed as a standalone game.
 
 <hr />
 
