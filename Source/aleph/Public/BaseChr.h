@@ -22,24 +22,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Movement")
-		FName MoveForwardBindName = "move_forward";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Movement")
-		FName MoveSideBindName = "move_side";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Camera")
-		FName VerticalLookBindName = "look_vertical";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Camera")
-		FName VerticalLookOnControllerBindName = "LookRate";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Camera")
-		FName HorizontalLookBindName = "look_horizontal";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Camera")
-		FName HorizontalLookOnControllerBindName = "TurnRate";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Movement")
-		FName JumpBindName = "Jump";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Movement")
-		FName CrouchBindName = "Crouch";
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bindings|Abilities")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Abilities")
 		FName GrappleBindName = "Grapple";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Camera")
+		FName VerticalLookBindName = "look_vertical";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Camera")
+		FName VerticalLookOnControllerBindName = "LookRate";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Camera")
+		FName HorizontalLookBindName = "look_horizontal";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Camera")
+		FName HorizontalLookOnControllerBindName = "TurnRate";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Movement")
+		FName MoveForwardBindName = "move_forward";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Movement")
+		FName MoveSideBindName = "move_side";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Movement")
+		FName JumpBindName = "Jump";
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Bindings|Movement")
+		FName CrouchBindName = "Crouch";
+	
 
 public:	
 	// Called every frame
@@ -49,26 +50,26 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Sensitivity")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Mouse|Sensitivity")
 		float MouseSensitivity = 0.25f;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Sensitivity")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Gamepad|Sensitivity")
 		float SensitivityZ = 25.0f;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Sensitivity")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Gamepad|Sensitivity")
 		float SensitivityY = 45.0f;
 
-	UFUNCTION(BlueprintPure, Category = "Sensitivity")
+	UFUNCTION(BlueprintPure, Category = "Character|Mouse|Sensitivity")
 		float GetMouseSens() const
 		{
 			UCSL_Window::PrintToConsole("Character", "Warning", FString::Printf(TEXT("Sensitivity: %f"), MouseSensitivity));
 			return MouseSensitivity;	
 		}
-	UFUNCTION(BlueprintPure, Category = "Sensitivity")
+	UFUNCTION(BlueprintPure, Category = "Character|Gamepad|Sensitivity")
 		float GetSensZ() const
 		{
 			UCSL_Window::PrintToConsole("Character", "Warning", FString::Printf(TEXT("Z Sensitivity: %f"), SensitivityZ));
 			return SensitivityZ;
 		}
-	UFUNCTION(BlueprintPure, Category = "Sensitivity")
+	UFUNCTION(BlueprintPure, Category = "Character|Gamepad|Sensitivity")
 		float GetSensY() const
 		{
 			UCSL_Window::PrintToConsole("Character", "Warning", FString::Printf(TEXT("X Sensitivity: %f"), SensitivityY));
@@ -78,42 +79,48 @@ public:
 public:
 	bool IsMoving();
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Speed")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Speed")
 		float BaseWalkSpeed = 250.0f;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Speed")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Speed")
 		float BaseWalkSpeedMultiplier = 2.2f;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Speed")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Speed")
 		float BaseCrouchSpeed = 75.0f;
 
-	UFUNCTION(BlueprintCallable, Category = "Movement")
+	UFUNCTION(BlueprintCallable, Category = "Character|Movement")
 		void MoveForward(float Value);
-	UFUNCTION(BlueprintCallable, Category = "Movement")
+	UFUNCTION(BlueprintCallable, Category = "Character|Movement")
 		void MoveSide(float Value);
-	UFUNCTION(BlueprintCallable, Category = "Camera")
+	UFUNCTION(BlueprintCallable, Category = "Character|Camera")
 		void VerticalLook(float Axis);
-	UFUNCTION(BlueprintCallable, Category = "Camera")
+	UFUNCTION(BlueprintCallable, Category = "Character|Camera")
 		void VerticalLookOnController(float Axis);
-	UFUNCTION(BlueprintCallable, Category = "Camera")
+	UFUNCTION(BlueprintCallable, Category = "Character|Camera")
 		void HorizontalLook(float Axis);
-	UFUNCTION(BlueprintCallable, Category = "Camera")
+	UFUNCTION(BlueprintCallable, Category = "Character|Camera")
 		void HorizontalLookOnController(float Axis);
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character Movement|Dash")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Dash")
 		int DashMode; // 0 = walking, 1 = sprinting, 2 = dashing
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character Movement|Dash")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Dash")
 		float DashAxis = 0.0f;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character Movement|Dash")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Dash")
 		bool IsWalkingV = false;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character Movement|Dash")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Dash")
 		bool IsWalkingH = false;
 	
 	bool bDevWalk = false;
-	UFUNCTION(BlueprintCallable, Exec, Category = "Cheats")
+	UFUNCTION(BlueprintCallable, Exec, Category = "Character|Cheats")
 		void DevCam(int Mode); // 0 = disable, 1 = enable
-	UFUNCTION(BlueprintCallable, Exec, Category = "Cheats")
+	UFUNCTION(BlueprintCallable, Exec, Category = "Character|Cheats")
 		void AllowCheats(int Mode); // 0 = disable, 1 = enable
 
 protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences")
+		bool bUseSmoothCrouch = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences|Rules")
+		bool bAllowRules = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences|Rules")
+		bool bCanUseCheats = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences|Abilities")
 		bool bCanUseHook = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences|Abilities")
@@ -126,10 +133,6 @@ protected:
 		bool bCanGrab = true;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences|Actions")
 		bool bCanUseFlash = true;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences")
-		bool bCanUseCheats = false;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Preferences")
-		bool bUseSmoothCrouch = true;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Status|Suppressions")
 		bool bIsHookSuppressed;

@@ -5,7 +5,7 @@
 <hr />
 
 ```
-Version: 1.0.0 BETA
+Version: 1.0.1 BETA
 Release: 21-June-2022
 ```
 
