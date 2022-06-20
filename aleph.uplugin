@@ -1,0 +1,46 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "aleph",
+	"Description": "Aleph is a framework that would help you start your new Unreal Engine game project.",
+	"Category": "Framework",
+	"CreatedBy": "whiteex",
+	"CreatedByURL": "https://dev-whiteex.github.io/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "aleph",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "conSole",
+			"Enabled": true,
+			"Optional": true
+		},
+		{
+			"Name": "WiMan",
+			"Enabled": true,
+			"Optional": true
+		},
+		{
+			"Name": "FSR 1.0",
+			"Enabled": true,
+			"Optional": true
+		},
+		{
+			"Name": "VitalX",
+			"Enabled": true,
+			"Optional": true
+		}
+	]
+}
