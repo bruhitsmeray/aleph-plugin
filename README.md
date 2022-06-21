@@ -5,7 +5,7 @@
 <hr />
 
 ```
-Version: 1.0.1 BETA
+Version: 1.0.2 BETA
 Release: 21-June-2022
 ```
 **Download:** [Click here](https://github.com/dev-whiteex/aleph-plugin/releases/download/21-June-2022/aleph-plugin.rar) <br />
