@@ -18,10 +18,10 @@ class ALEPH_API ABaseChr : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABaseChr();
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Components")
 		UCameraComponent* Camera;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Components")
 		UPhysicsHandleComponent* PhysicsHandle;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PhysicsInteraction")

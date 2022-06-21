@@ -38,6 +38,14 @@
 		{
 			"Name": "VitalX",
 			"Enabled": true
+		},
+		{
+			"Name": "CableComponent",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystem",
+			"Enabled": true
 		}
 	]
 }
