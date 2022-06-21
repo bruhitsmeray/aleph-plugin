@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "CSL_Window.h"
 #include "CableComponent.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "BaseChr.generated.h"
 
 UCLASS()
@@ -16,8 +18,14 @@ class ALEPH_API ABaseChr : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABaseChr();
-	
+	UPROPERTY(BlueprintReadWrite)
+		UCameraComponent* Camera;
 
+	UPROPERTY(BlueprintReadWrite)
+		UPhysicsHandleComponent* PhysicsHandle;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PhysicsInteraction")
+		UPrimitiveComponent* HitComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -151,9 +159,20 @@ protected:
 
 
 protected:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character: Movement - Grapple")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Character|Interaction")
+		float GrabDistance = 256.0f;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Interaction")
+		float OutlineRange = 256.0f;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Interaction")
+		float OutlineRadius = 128.0f;
+
+
+	UFUNCTION(BlueprintCallable, Category = "PhysicsInteraction")
+		void GrabLocation();
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Grapple")
 		FVector GrappleLocation;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character: Movement - Grapple")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Grapple")
 		float GrappleDistance = 3072.0f;
 	
 	UFUNCTION(BlueprintCallable, Category = "Trace")

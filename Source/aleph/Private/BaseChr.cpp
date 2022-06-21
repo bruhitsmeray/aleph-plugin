@@ -4,7 +4,7 @@
 #include "BaseChr.h"
 #include "CSL_Window.h"
 #include "Vitals.h"
-#include "Camera/CameraComponent.h"
+
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -28,8 +28,8 @@ ABaseChr::ABaseChr()
 	
 	JumpMaxCount = 2;
 	JumpMaxHoldTime = 0.1f;
-	
-	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
 	Camera->bUsePawnControlRotation = true;
 	Camera->SetWorldLocation(FVector(0,0,70));
@@ -54,6 +54,8 @@ ABaseChr::ABaseChr()
 	OuterLight->InnerConeAngle = 32.0f;
 	OuterLight->OuterConeAngle = 48.0f;
 	OuterLight->SetVisibility(false);
+
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 	
 	//	NOTE: In previous versions of this plugin, the cable was spawned alongside the other components, from now on
 	//	the user has to create the cable component manually in Blueprints as it is easier to customize.	It's functionality
@@ -125,21 +127,25 @@ void ABaseChr::MoveSide(float Value)
 void ABaseChr::VerticalLook(float Axis)
 {
 	AddControllerPitchInput(Axis * MouseSensitivity);
+	GrabLocation();
 }
 
 void ABaseChr::VerticalLookOnController(float Axis)
 {
 	AddControllerPitchInput(Axis * SensitivityY * GetWorld()->GetDeltaSeconds());
+	GrabLocation();
 }
 
 void ABaseChr::HorizontalLook(float Axis)
 {
 	AddControllerYawInput(Axis * MouseSensitivity);
+	GrabLocation();
 }
 
 void ABaseChr::HorizontalLookOnController(float Axis)
 {
 	AddControllerYawInput(Axis * SensitivityZ * GetWorld()->GetDeltaSeconds());
+	GrabLocation();
 }
 
 void ABaseChr::DevCam(int Mode)
@@ -172,6 +178,15 @@ void ABaseChr::AllowCheats(int Mode)
 	} else if(Mode == 0) {
 		bCanUseCheats = false;
 		UCSL_Window::PrintToConsole(Sender, "Notice", FString::Printf(TEXT("AllowCheats changed to %i"), Mode));
+	}
+}
+
+void ABaseChr::GrabLocation()
+{
+	PhysicsHandle->SetTargetLocation(Camera->GetComponentLocation() + (Camera->GetForwardVector() * GrabDistance));
+	if(bIsGrabbing && IsValid(HitComponent))
+	{
+		HitComponent->SetWorldRotation(GetControlRotation(), false, nullptr);
 	}
 }
 
