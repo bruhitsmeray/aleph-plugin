@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "CSL_Window.h"
-#include "CableComponent.h"
+
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "Components/SpotLightComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+
 #include "BaseChr.generated.h"
 
 UCLASS()
@@ -20,9 +23,14 @@ public:
 	ABaseChr();
 	UPROPERTY(BlueprintReadWrite, Category = "Components")
 		UCameraComponent* Camera;
-
 	UPROPERTY(BlueprintReadWrite, Category = "Components")
 		UPhysicsHandleComponent* PhysicsHandle;
+	UPROPERTY(BlueprintReadWrite, Category = "Components")
+		USpringArmComponent* SpringArm;
+	UPROPERTY(BlueprintReadWrite, Category = "Components")
+		USpotLightComponent* InnerLight;
+	UPROPERTY(BlueprintReadWrite, Category = "Components")
+		USpotLightComponent* OuterLight;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PhysicsInteraction")
 		UPrimitiveComponent* HitComponent;

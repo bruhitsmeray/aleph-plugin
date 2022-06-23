@@ -5,10 +5,9 @@
 #include "CSL_Window.h"
 #include "Vitals.h"
 
+#include "CableComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/SpotLightComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 FString Sender;
@@ -34,20 +33,20 @@ ABaseChr::ABaseChr()
 	Camera->bUsePawnControlRotation = true;
 	Camera->SetWorldLocation(FVector(0,0,70));
 
-	USpringArmComponent* SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(Camera);
 	SpringArm->TargetArmLength = 0.0f;
 	SpringArm->bEnableCameraRotationLag = true;
 	SpringArm->CameraRotationLagSpeed = 12.0f;
 
-	USpotLightComponent* InnerLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("InnerLight"));
+	InnerLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("InnerLight"));
 	InnerLight->SetupAttachment(SpringArm);
 	InnerLight->AttenuationRadius = 2500.0f;
 	InnerLight->InnerConeAngle = 16.0f;
 	InnerLight->OuterConeAngle = 24.0f;
 	InnerLight->SetVisibility(false);
 
-	USpotLightComponent* OuterLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("OuterLight"));
+	OuterLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("OuterLight"));
 	OuterLight->SetupAttachment(SpringArm);
 	OuterLight->Intensity = 2500.0f;
 	OuterLight->AttenuationRadius = 2500.0f;
