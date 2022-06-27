@@ -17,7 +17,7 @@ ABaseChr::ABaseChr()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Sender = this->GetName();
+	Sender = "BaseChr";
 	
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanJump = true;
@@ -180,6 +180,41 @@ void ABaseChr::AllowCheats(int Mode)
 	}
 }
 
+void ABaseChr::GrabTrace(bool& ReturnValue, FVector& ReturnLocation)
+{
+	if(UWorld* World = GetWorld())
+	{
+		FVector CamLoc;
+		FRotator CamRot;
+		FHitResult HitResult;
+
+		GetController()->GetPlayerViewPoint(CamLoc, CamRot);
+
+		FVector Start = CamLoc;
+		FVector End = (CamRot.Vector() * GrabDistance) + Start;
+
+		FCollisionQueryParams TraceParams;
+		bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, TraceParams);
+
+		if(bHit)
+		{
+			UCSL_Window::PrintToConsole(Sender, "Warning", "A hit has been registered.");
+			if(IsValid(HitResult.GetComponent()) && HitResult.GetComponent()->IsSimulatingPhysics())
+			{
+				ReturnValue = bHit;
+				HitComponent = HitResult.GetComponent();
+				ReturnLocation = HitResult.GetComponent()->GetComponentLocation();
+			} else {
+				UCSL_Window::PrintToConsole(Sender, "Warning", "Component not available or does not simulate physics.");
+			}
+		} else {
+			UCSL_Window::PrintToConsole(Sender, "Warning", "No hit registered.");
+		}
+	} else {
+		UCSL_Window::PrintToConsole(Sender, "Warning", "World is not available.");
+	}
+}
+
 void ABaseChr::GrabLocation()
 {
 	PhysicsHandle->SetTargetLocation(Camera->GetComponentLocation() + (Camera->GetForwardVector() * GrabDistance));
@@ -189,42 +224,55 @@ void ABaseChr::GrabLocation()
 	}
 }
 
-bool ABaseChr::Trace(float Distance)
+void ABaseChr::StopGrab(UPrimitiveComponent* GrabbedObject)
+{
+	if(IsValid(GrabbedObject))
+	{
+		GrabbedObject->SetAngularDamping(0.0f);
+		PhysicsHandle->ReleaseComponent();
+		bIsGrabbing = false;
+	}
+}
+
+bool ABaseChr::GrappleTrace(float Distance)
 {
 	if(UWorld* World = GetWorld())
 	{
-		APlayerCameraManager* ChrCamera = World->GetFirstPlayerController()->PlayerCameraManager;
-		FVector CamWorldLocation = ChrCamera->GetCameraLocation();
-		FVector CamForwardVec = ChrCamera->GetActorForwardVector() * Distance + CamWorldLocation;
+		FVector CamLoc;
+		FRotator CamRot;
+		FHitResult HitResult;
+
+		GetController()->GetPlayerViewPoint(CamLoc, CamRot);
+		
+		FVector Start = CamLoc;
+		FVector End = (CamRot.Vector() * Distance) + Start;
 
 		FCollisionQueryParams TraceParams;
-		FHitResult HitResult;
 		
-		bool bDidTrace = GetWorld()->LineTraceSingleByChannel(HitResult, CamWorldLocation, CamForwardVec, ECC_Visibility, TraceParams);
-		if(bDidTrace)
+		bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, TraceParams);
+		if(bHit && !HitResult.GetComponent()->IsSimulatingPhysics())
 		{
+			UCSL_Window::PrintToConsole(Sender, "Warning", "A hit has been registered.");
 			GrappleLocation = HitResult.Location;
 			if(UKismetMathLibrary::Vector_Distance(GrappleLocation, GetActorLocation()) > 3072.0f)
 			{
 				bIsHookSuppressed = true;
-				UCSL_Window::PrintToConsole(Sender, "Error", "The registered hit is too far away from the player.");
+				UCSL_Window::PrintToConsole(Sender, "Warnings", "The registered hit is too far away from the player.");
 				return false;
-			} else {
-				bIsHookSuppressed = false;
-				return HitResult.GetComponent()->IsSimulatingPhysics();
 			}
-		} else {
-			bIsHookSuppressed = true;
-			UCSL_Window::PrintToConsole(Sender, "Error", "No hit was registered.");
-			return false;
+			bIsHookSuppressed = false;
+			return HitResult.GetComponent()->IsSimulatingPhysics(); // What is this doing? I'll experiment with this line a bit and get rid of it if it does nothing.
 		}
+		bIsHookSuppressed = true;
+		UCSL_Window::PrintToConsole(Sender, "Warning", "No hit registered.");
+		return false;
 	}
 	return false;
 }
 
 void ABaseChr::Grapple()
 {
-	Trace(GrappleDistance);
+	GrappleTrace(GrappleDistance);
 	if(bCanUseHook && !bIsHookSuppressed)
 	{
 		bIsGrappling = true;

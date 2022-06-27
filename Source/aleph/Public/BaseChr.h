@@ -174,21 +174,24 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Interaction")
 		float OutlineRadius = 128.0f;
 
-
+	UFUNCTION(BlueprintCallable, Category = "PhysicsInteraction")
+		void GrabTrace(bool& ReturnValue, FVector& ReturnLocation);
 	UFUNCTION(BlueprintCallable, Category = "PhysicsInteraction")
 		void GrabLocation();
+	UFUNCTION(BlueprintCallable, Category = "PhysicsInteraction")
+		void StopGrab(UPrimitiveComponent* GrabbedObject);
 	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Grapple")
 		FVector GrappleLocation;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Character|Movement|Grapple")
 		float GrappleDistance = 3072.0f;
 	
-	UFUNCTION(BlueprintCallable, Category = "Trace")
-		bool Trace(float Distance);
 	UFUNCTION(BlueprintCallable, Category = "Abilities|GrapplingHook")
 		void Grapple();
 	UFUNCTION(BlueprintCallable, Category = "Abilities|GrapplingHook")
 		void GrappleTick();
+	UFUNCTION(BlueprintCallable, Category = "Abilities|GrapplingHook")
+		bool GrappleTrace(float Distance);
 	UFUNCTION(BlueprintCallable, Category = "Abilities|GrapplingHook")
 		void GrappleStop();
 	UFUNCTION(BlueprintCallable, Category = "Abilities|GrapplingHook")
